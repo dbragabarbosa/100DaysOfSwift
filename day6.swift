@@ -159,7 +159,8 @@ Agora podemos chamar isso usando nosso fechamento driving, assim:
 travel(action: driving)
 
 
-O fechamento passado não pode receber nenhum parâmetro e nem retornar nada
+Nesse caso, o fechamento passado não pode recebe nenhum parâmetro e não retorna nada.
+Isso é indicado pelo () -> Void 
 
 
 ---------- 5. TRAILING CLOSURE SYNTAX 
