@@ -134,6 +134,159 @@ struct Person {
 
 ---------- 3. LAZY PROPERTIES 
 
+As a performance optimization, Swift lets you create some properties only when they are needed. 
+As an example, consider this FamilyTree struct – it doesn’t do much, but in theory creating a family tree for someone takes a long time:
+
+struct FamilyTree {
+    init() {
+        print("Creating family tree!")
+    }
+}
+
+We might use that FamilyTree struct as a property inside a Person struct, like this:
+
+struct Person {
+    var name: String
+    var familyTree = FamilyTree()
+
+    init(name: String) {
+        self.name = name
+    }
+}
+
+var ed = Person(name: "Ed")
+
+But what if we didn’t always need the family tree for a particular person? 
+If we add the lazy keyword to the familyTree property, then Swift will only create the FamilyTree struct when it’s first accessed:
+
+lazy var familyTree = FamilyTree()
+
+Então, se você quiser ver a “Criando árvore genealógica!” mensagem, você precisa acessar a propriedade pelo menos uma vez:
+
+ed.familyTree
+
+
+Existem algumas razões pelas quais você prefere propriedades armazenadas ou calculadas em vez de uma propriedade preguiçosa, como:
+
+1. O uso de propriedades preguiçosas pode acidentalmente produzir trabalho onde você não espera. 
+Por exemplo, se você estiver construindo um jogo e acessando uma propriedade preguiçosa complexa pela primeira vez, 
+isso pode fazer com que seu jogo fique mais lento, por isso é muito melhor fazer um trabalho lento na frente e tirá-lo do caminho.
+
+2. As propriedades preguiçosas sempre armazenam seu resultado, o que pode ser desnecessário (porque você não vai usá-lo novamente) 
+ou inútil (porque precisa ser recalculado com frequência).
+
+3. Como as propriedades preguiçosas alteram o objeto subjacente ao qual estão anexadas, você não pode usá-las em estruturas constantes.
+
+Ao tentar otimizar o código, geralmente é uma ideia melhor esperar até que você realmente tenha um problema que você precisa otimizar, 
+em vez de espalhar prematuramente coisas como propriedades preguiçosas.
+
+
+---------- 4. STATIC PROPERTIES AND METHODS 
+
+Todas as propriedades e métodos que criamos até agora pertenciam a instâncias individuais de estruturas, o que significa que, 
+se tivéssemos uma estrutura Student, poderíamos criar várias instâncias de estudante, cada uma com suas próprias propriedades e métodos:
+
+struct Student {
+    var name: String
+
+    init(name: String) {
+        self.name = name
+    }
+}
+
+let ed = Student(name: "Ed")
+let taylor = Student(name: "Taylor")
+
+Você também pode pedir para Swift compartilhar propriedades e métodos específicos em todas as instâncias da estrutura, declarando-os como estáticos.
+
+To try this out, we’re going to add a static property to the Student struct to store how many students are in the class. 
+Each time we create a new student, we’ll add one to it:
+
+struct Student {
+    static var classSize = 0
+    var name: String
+
+    init(name: String) {
+        self.name = name
+        Student.classSize += 1
+    }
+}
+
+Because the classSize property belongs to the struct itself rather than instances of the struct, we need to read it using Student.classSize:
+
+print(Student.classSize)
+
+
+---------- 5. ACCESS CONTROL 
+
+O controle de acesso permite restringir qual código pode usar propriedades e métodos. 
+Isso é importante porque você pode querer impedir que as pessoas leiam uma propriedade diretamente, por exemplo.
+
+We could create a Person struct that has an id property to store their social security number:
+
+struct Person {
+    var id: String
+
+    init(id: String) {
+        self.id = id
+    }
+}
+
+let ed = Person(id: "12345")
+
+Once that person has been created, we can make their id be private so you can’t read it from outside the struct – 
+trying to write ed.id simply won’t work.
+
+Basta usar a palavra-chave private, assim:
+
+struct Person {
+    private var id: String
+
+    init(id: String) {
+        self.id = id
+    }
+}
+
+Now only methods inside Person can read the id property. For example:
+
+struct Person {
+    private var id: String
+
+    init(id: String) {
+        self.id = id
+    }
+
+    func identify() -> String {
+        return "My social security number is \(id)"
+    }
+}
+
+Outra opção comum é o public, que permite que todos os outros códigos usem a propriedade ou método.
+
+
+---------- 6. STRUCTS SUMMARY 
+
+1. Você pode criar seus próprios tipos usando estruturas, que podem ter suas próprias propriedades e métodos.
+
+2. Você pode usar propriedades armazenadas ou usar propriedades calculadas para calcular valores em tempo real.
+
+3. Se você quiser alterar uma propriedade dentro de um método, você deve marcá-la como mutating.
+
+4. Inicializadores são métodos especiais que criam estruturas. 
+Você obtém um inicializador memberwise por padrão, mas se você criar o seu próprio, deve dar um valor a todas as propriedades.
+
+5. Use the self constant to refer to the current instance of a struct inside a method.
+
+6. The lazy keyword tells Swift to create properties only when they are first used.
+
+7. Você pode compartilhar propriedades e métodos em todas as instâncias de uma estrutura usando a palavra-chave static.
+
+8. O controle de acesso permite restringir quais códigos podem usar propriedades e métodos.
+
+
+
+
+
 
 
 
