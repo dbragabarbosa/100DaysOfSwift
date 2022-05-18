@@ -294,4 +294,169 @@ controller was. When you let go to drop the table view controller onto the story
 looks like the below:
 
 
--  
+-  Toques finais para a interface do usuário
+Antes de terminarmos aqui, precisamos fazer algumas pequenas mudanças.
+
+Primeiro, precisamos dizer ao Xcode que este controlador de visualização de tabela de storyboard é o mesmo que temos em código dentro 
+do ViewController.swift. Para fazer isso, pressione Alt+Cmd+3 para ativar o inspetor de identidade (ou vá para Exibir > Utilitários > 
+Mostrar Inspetor de Identidade) e, em seguida, procure na parte superior de uma caixa chamada "Classe". Ele terá "UITableViewController" 
+escrito lá em texto cinza claro, mas se você clicar na seta no lado direito, verá um menu suspenso que contém "ViewController" - 
+selecione isso agora.
+
+Em segundo lugar, precisamos dizer ao Xcode que este novo controlador de visualização de tabela é o que deve ser mostrado quando o 
+aplicativo for executado pela primeira vez. Para fazer isso, pressione Alt+Cmd+4 para ativar o inspetor de atributos (ou vá para 
+Exibir > Utilitários > Mostrar Inspetor de Atributos), procure a caixa de seleção chamada "É o Controlador de Visualização Inicial" 
+e verifique se está marcada.
+
+Em terceiro lugar, quero que você use o esboço do documento para olhar dentro do novo controlador de visualização de tabela. 
+Dentro, você deve ver que contém uma "Visualização de Tabela", que por sua vez contém "Célula". Uma célula de visualização de tabela 
+é responsável por exibir uma linha de dados em uma tabela, e vamos exibir um nome de imagem em cada célula.
+
+Selecione "Célula" e, no inspetor de atributos, insira o texto "Imagem" no campo de texto marcado Identificador. Enquanto estiver lá, 
+altere a opção Estilo na parte superior do inspetor de atributos - deve ser Personalizado agora, mas altere-o para Básico.
+
+Finalmente, vamos colocar todo esse controlador de visualização de mesa dentro de outra coisa. É algo com o qual não precisamos 
+configurar ou nos preocupar, mas é um elemento extremamente comum da interface do usuário no iOS e acho que você o reconhecerá 
+imediatamente. É chamado de controlador de navegação, e você o vê em ação em aplicativos como Configurações e Mail - ele fornece a 
+fina barra cinza na parte superior da tela e é responsável por essa animação deslizante da direita para a esquerda que acontece 
+quando você se move entre as telas no iOS.
+
+Para colocar nosso controlador de visualização de tabela em um controlador de navegação, tudo o que você precisa fazer é acessar o 
+menu Editor e escolher Incorporar > Controlador de Navegação. O Interface Builder moverá seu controlador de visualização existente 
+para a direita e adicionará um controlador de navegação em torno dele - você deve ver uma barra cinza simulada acima da sua visualização 
+de tabela agora. Ele também moverá a propriedade "É o Controlador de Visualização Inicial" para o controlador de navegação.
+
+Neste ponto, você já fez o suficiente para dar uma olhada nos resultados do seu trabalho: pressione o botão play do Xcode agora ou 
+pressione Cmd+R se quiser se sentir um pouco elite. Depois que seu código for executado, agora você verá a caixa branca simples 
+substituída por uma grande visualização de tabela vazia. Se você clicar e arrastar o mouse, ele verá rolar e saltar como seria de 
+esperar, embora obviamente ainda não haja dados lá. Você também deve ver uma barra de navegação cinza na parte superior; isso será 
+importante mais tarde.
+
+
+- Mostrando muitas linhas
+The next step is to make the table view show some data. Specifically, we want it to show the list of “nssl” pictures, one per row. 
+Apple’s UITableViewController data type provides default behaviors for a lot of things, but by default it says there are zero rows.
+
+Our ViewController screen builds on UITableViewController and gets to override the default behavior of Apple’s table view to provide 
+customization where needed. You only need to override the bits you want; the default values are all sensible.
+
+Para que a tabela mostre nossas linhas, precisamos substituir dois comportamentos: quantas linhas devem ser mostradas e o que cada 
+linha deve conter. Isso é feito escrevendo dois métodos especialmente nomeados, mas quando você é novo no Swift, eles podem parecer 
+um pouco estranhos no início. Para garantir que todos possam acompanhar, vou levar isso devagar - afinal, este é o primeiro projeto!
+
+Let’s start with the method that sets how many rows should appear in the table. Add this code just after the end of viewDidLoad() – 
+if you start typing “numberof” then you can use Xcode’s code completion to do most of the work for you:
+
+override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return pictures.count
+}
+
+Observação: isso precisa ser após o final de viewDidLoad(), o que significa após sua chave de fechamento.
+
+Esse método contém a palavra "visão de tabela" três vezes, o que é profundamente confuso no início, então vamos detalhar o que isso significa.
+
+- The override keyword means the method has been defined already, and we want to override the existing behavior with this new behavior. 
+If you didn't override it, then the previously defined method would execute, and in this instance it would say there are no rows.
+
+- The func keyword starts a new function or a new method; Swift uses the same keyword for both. Technically speaking a method is a 
+function that appears inside a class, just like our ViewController, but otherwise there’s no difference.
+
+- O nome do método vem a seguir: tableView. Isso não parece muito útil, mas a maneira como a Apple define métodos é garantir que as 
+informações que são passadas para eles - os parâmetros - sejam nomeadas de forma útil e, neste caso, a primeira coisa que é passada 
+é a visualização da tabela que acionou o código. Uma visualização de tabela, como você deve ter percebido, é a coisa de rolagem que 
+conterá todos os nossos nomes de imagem e é um componente central do iOS.
+
+- As promised, the next thing to come is tableView: UITableView, which is the table view that triggered the code. But this contains 
+two pieces of information at once: tableView is the name that we can use to reference the table view inside the method, and UITableView 
+is the data type – the bit that describes what it is.
+
+- The most important part of the method comes next: numberOfRowsInSection section: Int. This describes what the method actually does. 
+We know it involves a table view because that's the name of the method, but the numberOfRowsInSection part is the actual action: 
+this code will be triggered when iOS wants to know how many rows are in the table view. The section part is there because table 
+views can be split into sections, like the way the Contacts app separates names by first letter. We only have one section, so 
+we can ignore this number. The Int part means “this will be an integer,” which means a whole number like 3, 30, or 35678 number.”
+
+- Finally, -> Int means “this method must return an integer”, which ought to be the number of rows to show in the table.
+
+There was one more thing I missed out, and I missed it out for a reason: it’s a bit confusing at this point in your Swift career. 
+Did you notice that _ in there? I hope you can remember that means the first parameter isn’t passed in using a name when called 
+externally – this is a remnant of Objective-C, where the name of the first parameter was usually built right into the method name.
+
+In this instance, the method is called tableView() because its first parameter is the table view that you’re working with. 
+It wouldn’t make much sense to write tableView(tableView: someTableView), so using the underscore means you would write 
+tableView(someTableView) instead.
+
+Não vou fingir que é fácil entender como os métodos Swift parecem e funcionam, mas a melhor coisa a fazer é não se preocupar 
+muito se você não entender agora, porque depois de algumas horas de codificação eles serão de segunda natureza.
+
+At the very least you do need to know that these methods are referred to using their name (tableView) and any named parameters. 
+Parameters without names are just referenced as underscores: _. So, to give it its full name, the method you just wrote is 
+referred to as tableView(_:numberOfRowsInSection:) – clumsy, I know, which is why most people usually just talk about the 
+important bit, for example, "in the numberOfRowsInSection method."
+
+Escrevemos apenas uma linha de código no método, que era return pictures.count. Isso significa "enviar de volta o número de 
+imagens em nossa matriz", por isso estamos pedindo que haja tantas linhas de tabela quanto imagens.
+
+
+- Desenfileirando células
+Esse é o primeiro de dois métodos que precisamos escrever para concluir este estágio do aplicativo. 
+A segunda é especificar como deve ser cada linha e segue uma convenção de nomenclatura semelhante ao método anterior. Adicione este código agora:
+
+override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
+    cell.textLabel?.text = pictures[indexPath.row]
+    return cell
+}
+
+Vamos dividi-lo em partes novamente, para que você possa ver exatamente como funciona.
+
+First, override func tableView(_ tableView: UITableView is identical to the previous method: the method name is just tableView(), 
+and it will pass in a table view as its first parameter. The _ means it doesn’t need to have a name sent externally, because it’s 
+the same as the method name.
+
+Second, cellForRowAt indexPath: IndexPath is the important part of the method name. The method is called cellForRowAt, and will 
+be called when you need to provide a row. The row to show is specified in the parameter: indexPath, which is of type IndexPath. 
+This is a data type that contains both a section number and a row number. We only have one section, so we can ignore that and just 
+use the row number.
+
+Third, -> UITableViewCell means this method must return a table view cell. If you remember, we created one inside Interface Builder 
+and gave it the identifier “Picture”, so we want to use that.
+
+Aqui é onde entra um pouco de magia do iOS: se você olhar para o aplicativo Configurações, verá que ele pode caber apenas cerca de 
+12 linhas na tela a qualquer momento, dependendo do tamanho do seu telefone.
+
+Para economizar tempo de CPU e RAM, o iOS cria apenas quantas linhas forem necessárias para funcionar. Quando uma linha sai da 
+parte superior da tela, o iOS a tira e a coloca em uma fila de reutilização pronta para ser reciclada em uma nova linha que vem 
+de baixo. Isso significa que você pode percorrer centenas de linhas por segundo, e o iOS pode se comportar preguiçosamente e evitar 
+a criação de novas células de visualização de tabela - ele apenas recicla as existentes.
+
+Essa funcionalidade é incorporada diretamente ao iOS, e é exatamente o que nosso código faz nesta linha:
+
+let cell = tableView.dequeueReusableCell(withIdentifier: "Picture", for: indexPath)
+
+Isso cria uma nova constante chamada cell, desenfileirando uma célula reciclada da tabela. 
+Temos que dar a ele o identificador do tipo de célula que queremos reciclar, então inserimos o mesmo nome que demos ao 
+Interface Builder: "Imagem". Também passamos o caminho de índice solicitado; isso é usado internamente pela visualização da tabela.
+
+Isso nos retornará uma célula de visualização de tabela com a qual possamos trabalhar para exibir informações. 
+Você pode criar seus próprios designs personalizados de células de visualização de tabela, se quiser (mais sobre isso muito mais tarde!), 
+mas estamos usando o estilo Básico integrado que tem um rótulo de texto. É aí que entra a linha dois: ela dá ao rótulo de texto da 
+célula o mesmo texto que uma imagem em nossa matriz. Aqui está o código novamente:
+
+cell.textLabel?.text = pictures[indexPath.row]
+
+The cell has a property called textLabel, but it’s optional: there might be a text label, or there might not be – if you had designed 
+your own, for example. Rather than write checks to see if there is a text label or not, Swift lets us use a question mark – textLabel? – 
+to mean “do this only if there is an actual text label there, or do nothing otherwise.”
+
+We want to set the label text to be the name of the correct picture from our pictures array, and that’s exactly what the code does. 
+indexPath.row will contain the row number we’re being asked to load, so we’re going to use that to read the corresponding picture 
+from pictures, and place it into the cell’s text label.
+
+The last line in the method is return cell. Remember, this method expects a table view cell to be returned, so we need to send back 
+the one we created – that’s what the return cell does.
+
+Com esses dois métodos bem pequenos em vigor, você pode executar seu código novamente agora e ver como ele fica. 
+Tudo bem, agora você deve ver 10 células de visualização de tabela, cada uma com um nome de imagem diferente dentro.
+Se você clicar em um deles, ele ficará cinza, mas nada mais acontecerá. Vamos consertar isso agora...
+
