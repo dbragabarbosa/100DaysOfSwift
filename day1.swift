@@ -37,4 +37,4 @@
 
 // 5.Swift uses type inference to assign each variable or constant a type, but you can provide explicit types if you want.
 
-// Terminei o day1: 04/03/2022
+// Terminei o day1: 04/03/2022  
