@@ -25,7 +25,7 @@ class ViewController: UITableViewController {
                 pictures.append(item)
             }
         }
-        print(pictures)
+        print(pictures.sort())
         // Do any additional setup after loading the view.
     }
     

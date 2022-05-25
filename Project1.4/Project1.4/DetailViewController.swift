@@ -29,7 +29,7 @@ class DetailViewController: UIViewController {
         imageView.image  = UIImage(named: imageToLoad)
     }
         
-    title = selectedImage
+        title = selectedImage?.uppercased()
     navigationItem.largeTitleDisplayMode = .never
 
         // Do any additional setup after loading the view.
