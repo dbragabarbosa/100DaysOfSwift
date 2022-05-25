@@ -143,7 +143,8 @@ Now Swift will assign 1 to mercury and count upwards from there, meaning that ea
 ------------ COMPLEX TYPES: SUMMARY
 RESUMO:
 
-1.Matrizes, conjuntos, tuplas e dicionários permitem que você armazene um grupo de itens sob um único valor. Cada um deles faz isso de maneiras diferentes, então o que você usa depende do comportamento que deseja.
+1.Matrizes, conjuntos, tuplas e dicionários permitem que você armazene um grupo de itens sob um único valor. Cada um deles faz isso de maneiras 
+diferentes, então o que você usa depende do comportamento que deseja.
 
 2.Arrays armazenam itens na ordem em que você os adiciona, e você os acessa usando posições numéricas.
 
@@ -155,5 +156,6 @@ RESUMO:
 
 6.As Enums são uma maneira de agrupar valores relacionados para que você possa usá-los sem erros ortográficos.
 
-7.Você pode anexar valores brutos a enums para que eles possam ser criados a partir de inteiros ou strings, ou você pode adicionar valores associados para armazenar informações adicionais sobre cada caso.
+7.Você pode anexar valores brutos a enums para que eles possam ser criados a partir de inteiros ou strings, ou você pode adicionar valores 
+associados para armazenar informações adicionais sobre cada caso.
 
