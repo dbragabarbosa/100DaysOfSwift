@@ -166,6 +166,136 @@ back to the standard editor (that is, press Cmd+return to turn off the assistant
 
 ---------- 3. MAKING THE BASIC GAME WORK: UIButton AND CALayer 
 
+Vamos criar uma variedade de cordas que conterão todos os países que serão usados para o nosso jogo e, ao mesmo tempo, 
+criaremos outra propriedade que manterá a pontuação atual do jogador - afinal, é um jogo!
+
+Let's start with the new properties. Add these two lines directly beneath the @IBOutlet lines you added earlier in ViewController.swift:
+
+var countries = [String]()
+var score = 0
+
+The first line is something you saw in project 1: it creates a new property called countries that will hold a new array of strings. 
+The second one creates a new property called score that is set to 0. As you’ve seen previously, Swift’s type inference works 
+wonders here – it figures out what data type a variable or constant should be based on what we put into it.
+
+Vamos colocar tudo isso em prática nos próximos minutos. Primeiro, vamos preencher nossa matriz de países com os sinalizadores 
+que temos, então adicione este código dentro do método viewDidLoad():
+
+countries.append("estonia")
+countries.append("france")
+countries.append("germany")
+countries.append("ireland")
+countries.append("italy")
+countries.append("monaco")
+countries.append("nigeria")
+countries.append("poland")
+countries.append("russia")
+countries.append("spain")
+countries.append("uk")
+countries.append("us")
+
+Isso é idêntico ao código que você viu no projeto 1, então não há nada a aprender aqui. Se você se lembrar da 
+sua introdução ao Swift, saberá que há uma maneira mais eficiente de fazer isso, que é criar tudo em uma linha. 
+Para fazer isso, você escreveria:
+
+countries += ["estonia", "france", "germany", "ireland", "italy", "monaco", "nigeria", "poland", "russia", "spain", "uk", "us"]
+
+The next step is to write a method that shows three random flag images on the screen. Buttons have a setImage() method 
+that lets us control what picture is shown inside and when, so we can use that with UIImage to display our flags.
+
+Adicione este novo método abaixo de viewDidLoad():
+
+func askQuestion() {
+    button1.setImage(UIImage(named: countries[0]), for: .normal)
+    button2.setImage(UIImage(named: countries[1]), for: .normal)
+    button3.setImage(UIImage(named: countries[2]), for: .normal)
+}
+
+The first line is easy enough: we're declaring a new method called askQuestion(), and it takes no parameters. 
+The next three use UIImage(named:) and read from an array by position, both of which we used in project 1, so 
+that bit isn't new either. However, the rest of those lines is new, and shows off two things:
+
+- button1.setImage() assigns a UIImage to the button. We have the US flag in there right now, 
+but this will change it when askQuestion() is called.
+
+- for: .normal The setImage() method takes a second parameter that describes which state of the button 
+should be changed. We're specifying .normal, which means "the standard state of the button."
+
+That .normal parameter looks like an enum, but it’s actually a static property of a struct called UIControlState. 
+In Objective-C – the language UIKit was written in – it’s an enum, but in Swift it gets mapped to a struct that 
+just happens to be used like an enum, so if you want to be technically correct it’s not a true enum in Swift. 
+At this point in your Swift career there is no difference, but let’s face it: “technically correct” is the best kind of correct.
+
+Now that we have the countries all set up and a method that displays flags, all we need to do is add one more line just before 
+the end of viewDidLoad() to make it all spring to life:
+
+askQuestion()
+
+Neste ponto, o jogo está em um estado adequado para ser executado, então vamos tentar.
+
+Primeiro, selecione o simulador do iPhone XR acessando o menu Produto e escolhendo Destino > iPhone XR. 
+Agora pressione Cmd+R agora para iniciar o Simulador e experimentá-lo.
+
+Você notará imediatamente dois problemas
+
+1. Estamos mostrando as bandeiras estonianas e francesas, ambas brancas, então é difícil dizer se são bandeiras ou apenas blocos de cor
+
+2. O "jogo" não é muito divertido, porque são sempre as mesmas três bandeiras!
+
+O segundo problema terá que esperar alguns minutos, mas podemos resolver o primeiro problema agora. 
+Uma das muitas coisas poderosas sobre visualizações no iOS é que elas são apoiadas pelo que é chamado de CALayer, 
+que é um tipo de dados Core Animation responsável por gerenciar a aparência da sua visualização.
+
+Conceptually, CALayer sits beneath all your UIViews (that's the parent of UIButton, UITableView, and so on), so 
+it's like an exposed underbelly giving you lots of options for modifying the appearance of views, as long as you 
+don't mind dealing with a little more complexity. We're going to use one of these appearance options now: borderWidth.
+
+The Estonian flag has a white stripe at the bottom, and because our view controller has a white background that whole 
+stripe is invisible. We can fix that by giving the layer of our buttons a borderWidth of 1, which will draw a one point 
+black line around them. Put these three lines in viewDidLoad() directly before it calls askQuestion():
+
+button1.layer.borderWidth = 1
+button2.layer.borderWidth = 1
+button3.layer.borderWidth = 1
+
+Lembra como pontos e pixels são coisas diferentes? Nesse caso, nossa borda será de 1 pixel em dispositivos não retina, 
+2 pixels em dispositivos retina e 3 em dispositivos retina HD. Graças à multiplicação automática ponto a pixel, essa 
+borda parecerá visualmente ter mais ou menos a mesma espessura em todos os dispositivos.
+
+By default, the border of CALayer is black, but you can change that if you want by using the UIColor data type. 
+I said that CALayer brings with it a little more complexity, and here's where it starts to be visible: CALayer 
+sits at a lower technical level than UIButton, which means it doesn't understand what a UIColor is. UIButton 
+knows what a UIColor is because they are both at the same technical level, but CALayer is below UIButton, so UIColor is a mystery.
+
+Don't despair, though: CALayer has its own way of setting colors called CGColor, which comes from Apple's Core Graphics 
+framework. This, like CALayer, is at a lower level than UIButton, so the two can talk happily – again, as long as you're 
+happy with the extra complexity.
+
+Even better, UIColor (which sits above CGColor) is able to convert to and from CGColor easily, which means you don't 
+need to worry about the complexity – hurray!
+
+So, let's put all that together into some code that changes the border color using UIColor and CGColor together. 
+Put these three just below the three borderWidth lines in viewDidLoad():
+
+button1.layer.borderColor = UIColor.lightGray.cgColor
+button2.layer.borderColor = UIColor.lightGray.cgColor
+button3.layer.borderColor = UIColor.lightGray.cgColor
+
+As you can see, UIColor has a property called lightGray that returns (shock!) a UIColor instance that represents a 
+light gray color. But we can't put a UIColor into the borderColor property because it belongs to a CALayer, which 
+doesn't understand what a UIColor is. So, we add .cgColor to the end of the UIColor to have it automagically converted 
+to a CGColor. Perfect.
+
+If lightGray doesn't interest you, you can create your own color like this:
+
+UIColor(red: 1.0, green: 0.6, blue: 0.2, alpha: 1.0).cgColor
+
+You need to specify four values: red, green, blue and alpha, each of which should range from 0 (none of that color) 
+to 1.0 (all of that color). The code above generates an orange color, then converts it to a CGColor so it can be 
+assigned to a CALayer's borderColor property.
+
+Isso é o suficiente com o estilo, eu acho - se você executar o aplicativo agora, ele deve ficar melhor.
+
 
 
 
