@@ -2,6 +2,7 @@
 
 OPERADORES E CONDIÇÕES 
 
+
 ---------- 1. OPERADORES ARITMÉTICOS 
 
 +  -  *  /  % 
