@@ -168,10 +168,12 @@ Vamos resumir:
 
 5.Embora sejam semelhantes aos loops while, os loops repeat sempre executam o corpo de seu loop pelo menos uma vez.
 
-6.You can exit a single loop using break, but if you have nested loops you need to use break followed by whatever label you placed before your outer loop.
+6.You can exit a single loop using break, but if you have nested loops you need to use break followed by whatever label you placed 
+before your outer loop.
 
 7.Você pode pular itens em um loop usando continue.
 
-8.Loops infinitos não terminam até que você os peça, e são feitos usando while true. Certifique-se de ter uma condição em algum lugar para terminar seus loops infinitos!
+8.Loops infinitos não terminam até que você os peça, e são feitos usando while true. Certifique-se de ter uma condição em algum 
+lugar para terminar seus loops infinitos!
 
 
