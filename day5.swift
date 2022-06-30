@@ -2,6 +2,7 @@
 
 FUNCTIONS 
 
+
 ---------- 1. WRITING FUNCTIONS 
 
 Ex: 
