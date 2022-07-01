@@ -2,6 +2,8 @@
 
 CLOSURES (ENCERRAMENTOS) - parte 1
 
+
+
 ---------- 1. CREATING BASIC CLOSURES 
 
 Swift nos permite usar funções como qualquer outro tipo, como strings e inteiros. Isso significa que você pode criar uma função 
