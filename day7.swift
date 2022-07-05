@@ -2,6 +2,7 @@
 
 CLOSURES (ENCERRAMENTOS) - parte 2
 
+
 ---------- 1. USING CLOSURES AS PARAMETERS WHEN THEY ACCEPT PARAMETERS 
 
 É aqui que os fechamentos podem começar a ser lidos um pouco como o ruído da linha: 
