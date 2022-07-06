@@ -2,6 +2,8 @@
 
 STRUCTS (ESTRUTURAS) - parte 1
 
+
+
 As estruturas nos permitem criar nossos próprios tipos de dados a partir de vários tipos pequenos. 
 Por exemplo, você pode juntar três strings e um booleano e dizer que isso representa um usuário em seu aplicativo.
 
