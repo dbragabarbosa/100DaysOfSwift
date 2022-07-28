@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UITableViewController
 {
     var petitions = [Petition]()
+    var petitionsSelect = [Petition]()
 
     override func viewDidLoad()
     {
@@ -60,13 +61,15 @@ class ViewController: UITableViewController
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json)
         {
             petitions = jsonPetitions.results
+            petitionsSelect = petitions
             tableView.reloadData()
         }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return petitions.count
+//        return petitions.count
+        return petitionsSelect.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
