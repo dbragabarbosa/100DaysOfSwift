@@ -218,4 +218,152 @@ should be able to see all the buttons and clues configured correctly. Now all th
 
 
 
----------- 
+---------- ITS PLAY TIME: firstIndex(of:) AND joined()
+
+Precisamos adicionar mais três métodos ao nosso controlador de visualização para dar vida a este jogo: um para lidar 
+com botões de letras sendo tocados, outro para lidar com a palavra atual que está sendo limpa e um terceiro para lidar 
+com a palavra atual que está sendo enviada. Os dois primeiros são mais fáceis, então vamos fazer isso para que possamos 
+entrar nas coisas sérias.
+
+First, we already used the addTarget() method in viewDidLoad() to make all our letter buttons call the method letterTapped(), 
+but right now it’s empty. Please fill it in like this:
+
+@objc func letterTapped(_ sender: UIButton) {
+    guard let buttonTitle = sender.titleLabel?.text else { return }
+    currentAnswer.text = currentAnswer.text?.appending(buttonTitle)
+    activatedButtons.append(sender)
+    sender.isHidden = true
+}
+
+Isso faz quatro coisas:
+
+1. Ele adiciona uma verificação de segurança para ler o título do botão tocado ou sair se não tiver um por algum motivo.
+
+2. Acrescenta o título do botão à resposta atual do jogador.
+
+3. Acrescenta o botão à matriz activatedButtons
+
+4. Oculta o botão que foi tocado.
+
+The activatedButtons array is being used to hold all buttons that the player has tapped before submitting their answer. 
+This is important because we're hiding each button as it is tapped, so if the user taps "Clear" we need to know which 
+buttons are currently in use so we can re-show them. You already created an empty method for clear being tapped, so fill 
+it in like this:
+
+@objc func clearTapped(_ sender: UIButton) {
+    currentAnswer.text = ""
+
+    for btn in activatedButtons {
+        btn.isHidden = false
+    }
+
+    activatedButtons.removeAll()
+}
+
+Como você pode ver, este método remove o texto do campo de texto de resposta atual, revela todos os botões ativados e, 
+em seguida, remove todos os itens da matriz activatedButtons.
+
+That just leaves one very important method to fill in, and you already created its stub: the submitTapped() method for 
+when the player taps the submit button.
+
+This method will use firstIndex(of:) to search through the solutions array for an item and, if it finds it, tells us 
+its position. Remember, the return value of firstIndex(of:) is optional so that in situations where nothing is found 
+you won't get a value back – we need to unwrap its return value carefully.
+
+Se o usuário receber uma resposta correta, mudaremos o rótulo das respostas para que, em vez de dizer "7 CARTAS", ele 
+diga "ASSOMBRADO", para que eles saibam quais já resolveram.
+
+The way we're going to do this is hopefully easy enough to understand: firstIndex(of:) will tell us which solution matched 
+their word, then we can use that position to find the matching clue text. All we need to do is split the answer label text 
+up by \n, replace the line at the solution position with the solution itself, then re-join the answers label back together.
+
+You've already learned how to use components(separatedBy:) to split text into an array, and now it's time to meet its 
+counterpart: joined(separator:). This makes an array into a single string, with each array element separated by the 
+string specified in its parameter.
+
+Once that's done, we clear the current answer text field and add one to the score. If the score is evenly divisible by 7, 
+we know they have found all seven words so we're going to show a UIAlertController that will prompt the user to go to the 
+next level.
+
+Se você se lembra, Swift tem um operador de divisão restante, %, que nos diz qual número permanece quando você divide um 
+número uniformemente por outro - isso é perfeito aqui.
+
+That's all the parts explained, so here's the complete submitTapped() method:
+
+@objc func submitTapped(_ sender: UIButton) {
+    guard let answerText = currentAnswer.text else { return }
+
+    if let solutionPosition = solutions.firstIndex(of: answerText) {
+        activatedButtons.removeAll()
+
+        var splitAnswers = answersLabel.text?.components(separatedBy: "\n")
+        splitAnswers?[solutionPosition] = answerText
+        answersLabel.text = splitAnswers?.joined(separator: "\n")
+
+        currentAnswer.text = ""
+        score += 1
+
+        if score % 7 == 0 {
+            let ac = UIAlertController(title: "Well done!", message: "Are you ready for the next level?", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Let's go!", style: .default, handler: levelUp))
+            present(ac, animated: true)
+        }
+    }
+}
+
+Ainda não escrevemos um método levelUp(), mas não é tão difícil. Ele precisa:
+
+1. Adicione 1 ao level.
+
+2. Remova todos os itens da matriz de solutions.
+
+3. Call loadLevel() so that a new level file is loaded and shown.
+
+4. Certifique-se de que todos os nossos botões de letra estejam visíveis.
+
+Add this levelUp() method now:
+
+func levelUp(action: UIAlertAction) {
+    level += 1
+    solutions.removeAll(keepingCapacity: true)
+
+    loadLevel()
+
+    for btn in letterButtons {
+        btn.isHidden = false
+    }
+}
+As you can see, that code clears out the existing solutions array before refilling it inside loadLevel(). 
+Then of course you'd need to create level2.txt, level3.txt and so on.
+
+Para começar, fiz um exemplo de level2.txt para você dentro dos meus arquivos de exemplo para este projeto - 
+tente adicionar isso ao projeto e veja o que você acha. Quaisquer outros níveis devem ser feitos - apenas 
+certifique-se de que haja um total de 20 grupos de letras de cada vez!
+
+
+
+---------- PROPERTY OBSERVERS: didSet 
+
+Há uma última coisa a cobrir antes que este projeto seja concluído, e é pequeno e fácil: observadores de propriedade. 
+Você aprendeu sobre isso quando analisamos os fundamentos da Swift, mas agora é hora de colocá-los em ação.
+
+Right now we have a property called score that is set to 0 when the game is created and increments by one whenever an answer 
+is found. But we don't do anything with that score, so our score label is never updated.
+
+One solution to this problem is to use something like scoreLabel.text = "Score: \(score)" whenever the score value is 
+changed, and that's perfectly fine to begin with. But what happens if you're changing the score from several places? 
+You need to keep all the code synchronized, which is unpleasant.
+
+Swift’s solution is property observers, which let you execute code whenever a property has changed. To make them work, 
+we use either didSet to execute code when a property has just been set, or willSet to execute code before a property has been set.
+
+In our case, we want to add a property observer to our score property so that we update the score label whenever the 
+score value was changed. So, change your score property to this:
+
+var score = 0 {
+    didSet {
+        scoreLabel.text = "Score: \(score)"
+    }
+}
+
+Using this method, any time score is changed by anyone, our score label will be updated. That's it, the project is done!
