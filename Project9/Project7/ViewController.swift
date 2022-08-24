@@ -30,21 +30,20 @@ class ViewController: UITableViewController
         }
 
         
-        if let url = URL(string: urlString)
+        DispatchQueue.global(qos: .userInitiated).async
         {
-            if let data = try? Data(contentsOf: url)
+            if let url = URL(string: urlString)
             {
-                parse(json: data)
-            }
-            else
-            {
-                showError()
+                if let data = try? Data(contentsOf: url)
+                {
+                    self.parse(json: data)
+                    return
+                }
             }
         }
-        else
-        {
-            showError()
-        }
+
+        showError()
+        
     }
     
     func showError()

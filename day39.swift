@@ -157,4 +157,77 @@ If you want to try the other QoS queues, you could also use .userInteractive, .u
 
 
 
----------- 
+---------- BACK TO THE MAIN THREAD: DispatchQueue.main 
+
+Com essa mudança, nosso código é cada vez pior. É melhor porque não bloqueia mais o thread principal enquanto o JSON é baixado 
+do Whitehouse.gov. É pior porque estamos empurrando o trabalho para o thread em segundo plano, e qualquer outro código chamado 
+nesse trabalho também estará no thread em segundo plano.
+
+This change also introduced some confusion: the showError() call will get called regardless of what the loading does. Yes, there’s 
+still a call to return in the code, but it now effectively does nothing – it’s returning from the closure that was being executed 
+asynchronously, not from the whole method.
+
+The combination of these problems means that regardless of whether the download succeeds or fails, showError() will be called.
+ And if the download succeeds, the JSON will be parsed on the background thread and the table view's reloadData() will be called 
+ on the background thread – and the error will be shown regardless.
+
+Vamos corrigir esses problemas, começando com o trabalho em segundo plano da interface do usuário. Não há problema em analisar 
+o JSON em um thread em segundo plano, mas nunca é OK fazer o trabalho da interface do usuário lá.
+
+Isso é tão importante que vale a pena repetir duas vezes: nunca há problema em fazer o trabalho da interface do usuário no 
+thread em segundo plano.
+
+If you're on a background thread and want to execute code on the main thread, you need to call async() again. This time, 
+however, you do it on DispatchQueue.main, which is the main thread, rather than one of the global quality of service queues.
+
+We could modify our code to have async() before every call to showError() and parse(), but that's both ugly and inefficient. 
+Instead, it's better to place the async() call inside showError(), wrapping up the whole UIAlertController code, and also 
+inside parse(), but only where the table view is being reloaded. The actual JSON parsing can happily stay on the background 
+thread.
+
+So, inside the parse() method find this code:
+
+tableView.reloadData()
+
+…and replace it with this new code, bearing in mind again the need for self. to make our capturing clear:
+
+DispatchQueue.main.async {
+    self.tableView.reloadData()
+}
+
+To stop showError() being called regardless of the result of our fetch call, we need to move it inside the call to 
+DispatchQueue.global() in viewDidLoad(), like this:
+
+DispatchQueue.global(qos: .userInitiated).async {
+    if let url = URL(string: urlString) {
+        if let data = try? Data(contentsOf: url) {
+            self.parse(json: data)
+            return
+        }
+    }
+
+    self.showError()
+}
+
+Remember, we need to add self. to the showError() call because it’s inside a closure now.
+
+But this has created a second problem: showError() creates and shows a UIAlertController – we now have user interface work 
+happening on a background thread, which is always a bad idea.
+
+So, we need to modify showError() to push that work back to the main thread, like this:
+
+func showError() {
+    DispatchQueue.main.async {
+        let ac = UIAlertController(title: "Loading error", message: "There was a problem loading the feed; please check your connection and try again.", preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(ac, animated: true)
+    }
+}
+
+Neste ponto, este código está em um lugar melhor: fazemos todo o trabalho lento fora do thread principal e, em seguida, 
+empurramos o trabalho de volta para o thread principal quando queremos fazer o trabalho da interface do usuário. Essa 
+rejeição de plano de fundo/primeiro plano é comum, e você a verá novamente em projetos posteriores.
+
+
+
+----------
