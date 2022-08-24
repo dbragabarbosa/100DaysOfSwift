@@ -40,17 +40,20 @@ class ViewController: UITableViewController
                     return
                 }
             }
+            
+            self.showError()
         }
-
-        showError()
         
     }
     
     func showError()
     {
-        let ac = UIAlertController(title: "Loading error", message: "There was a problem loading the feed; please check your connection and try again.", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        present(ac, animated: true)
+        DispatchQueue.main.async
+        {
+            let ac = UIAlertController(title: "Loading error", message: "There was a problem loading the feed; please check your connection and try again.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(ac, animated: true)
+        }
     }
     
     func parse(json: Data)
@@ -61,7 +64,12 @@ class ViewController: UITableViewController
         {
             petitions = jsonPetitions.results
             petitionsSelect = petitions
-            tableView.reloadData()
+            
+            DispatchQueue.main.async
+            {
+                self.tableView.reloadData()
+            }
+            
         }
     }
     
