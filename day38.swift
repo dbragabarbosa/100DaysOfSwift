@@ -20,4 +20,27 @@ os três desafios.
 
 
 
----------- 
+---------- WRAP UP 
+
+Sim, foi preciso muito código de interface de usuário para iniciar este projeto, mas espero que tenha mostrado que você pode 
+fazer ótimos jogos usando apenas as ferramentas UIKit que você já conhece. Construir interfaces de usuário programaticamente 
+é obviamente muito menos visual do que usar storyboards, mas o outro lado é que tudo está sob seu controle - não há conexões 
+acontecendo nos bastidores.
+
+Of course, at the same time as making another game, you've made several steps forward in your iOS development journey, this 
+time learning about addTarget(), enumerated(), joined(), replacingOccurrences(), and more.
+
+
+Desafio
+
+Uma das melhores maneiras de aprender é escrever seu próprio código o mais rápido possível, então aqui estão três maneiras pelas 
+quais você deve tentar estender este aplicativo para garantir que você entenda completamente o que está acontecendo:
+
+1. Use as técnicas que você aprendeu no projeto 2 para desenhar uma fina linha cinza ao redor da visualização de botões, para que 
+ela se destaque do resto da interface do usuário.
+
+2. If the user enters an incorrect guess, show an alert telling them they are wrong. You’ll need to extend the submitTapped() method 
+so that if firstIndex(of:) failed to find the guess you show the alert.
+
+3. Try making the game also deduct points if the player makes an incorrect guess. Think about how you can move to the next level – 
+we can’t use a simple division remainder on the player’s score any more, because they might have lost some points.
