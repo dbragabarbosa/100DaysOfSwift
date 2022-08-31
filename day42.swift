@@ -92,4 +92,67 @@ and you're done with the storyboard.
 
 
 
----------- 
+---------- UICollectionView DATA SOURCES 
+
+We’ve now modified the user interface so that it considers ViewController to be a collection view controller, but we haven’t 
+implemented any of the data source methods to make that work. This works just like table views, so we get questions like “how 
+many items are there?” and “what’s in item number 1?” that we need to provide sensible answers for.
+
+To begin with, let's put together the most basic implementation that allows our app to work. Normally this would be straightforward, 
+but here we have a small complication: when we call dequeueReusableCell(withReuseIdentifier:for:) we’ll be sent back a regular 
+UICollectionViewCell rather than our custom PersonCell type.
+
+We can fix that we’ll add a conditional typecast, but that adds a second problem: what do we do if our typecast fails? That 
+is, what if we expected to get a PersonCell but actually got back a regular UICollectionViewCell instead? If this happens it 
+means something is fundamentally broken in our app – we screwed up in the storyboard, probably. As a result, we need to get 
+out immediately; there’s no point trying to make our app limp onwards when something is really broken.
+
+Então, vamos usar uma nova função chamada fatalError(). Quando chamado, isso fará com que seu aplicativo falhe incondicionalmente - 
+ele morrerá imediatamente e imprimirá qualquer mensagem que você fornecer a ele. Isso pode parecer horrível, mas:
+
+1.Você só deve chamar isso quando as coisas estão realmente ruins e não quer continuar - é realmente apenas uma verificação 
+de bom senso para garantir que tudo esteja como esperamos.
+
+2.Swift knows that fatalError() always causes a crash, so we can use it to escape from a method that has a return value without 
+sending anything back. This makes it really convenient to use in places like our current scenario.
+
+It’s best if you see fatalError() in some real code, so add these two methods now:
+
+override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    return 10
+}
+
+override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Person", for: indexPath) as? PersonCell else {
+        // we failed to get a PersonCell – bail out!
+        fatalError("Unable to dequeue PersonCell.")
+    }
+
+    // if we're still here it means we got a PersonCell, so we can return it
+    return cell
+}
+
+Não analisamos nenhum desses códigos antes, então quero separá-lo em detalhes antes de continuar:
+
+- collectionView(_:numberOfItemsInSection:)Isso deve retornar um inteiro e informa à visualização da coleção quantos itens você 
+deseja mostrar em sua grade. Eu devolvi 10 deste método, mas em breve mudaremos para o uso de uma matriz.
+
+- collectionView(_:cellForItemAt:) This must return an object of type UICollectionViewCell. We already designed a prototype in 
+Interface Builder, and configured the PersonCell class for it, so we need to create and return one of these.
+
+- dequeueReusableCell(withReuseIdentifier:for:)Isso cria uma célula de visualização de coleção usando a reutilização identificada 
+que especificamos, neste caso "Pessoa", porque foi isso que digitamos no Interface Builder anteriormente. Mas, assim como as 
+visualizações de tabela, esse método tentará reutilizar automaticamente as células de visualização de coleção, portanto, assim 
+que uma célula sair da vista, ela poderá ser reciclada para que não tenhamos que continuar criando novas.
+
+Note that we need to typecast our collection view cell as a PersonCell because we'll soon want to access its imageView and name outlets.
+
+Esses dois novos métodos vêm de visualizações de coleção, mas acho que você os encontrará notavelmente semelhantes aos métodos 
+de visualização de tabela que usamos até agora - você pode voltar e abrir o projeto 1 novamente para ver o quão semelhante!
+
+Pressione Cmd+R para executar seu projeto agora, e você verá o início das coisas começar a se unir: a célula protótipo que você 
+projetou no Interface Builder aparecerá 10 vezes, e você pode rolar para cima e para baixo para ver todas elas. Como você verá, 
+você pode encaixar duas células na tela, que é o que torna a visualização da coleção diferente da visualização da tabela. Além 
+disso, se você girar para a paisagem, verá que ela anima automaticamente (e lindamente) o movimento das células para que elas 
+assumam a largura total.
+
