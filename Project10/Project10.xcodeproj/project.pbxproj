@@ -14,6 +14,7 @@
 		ED7D850E28BFC321007EE798 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED7D850D28BFC321007EE798 /* Assets.xcassets */; };
 		ED7D851128BFC321007EE798 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED7D850F28BFC321007EE798 /* LaunchScreen.storyboard */; };
 		ED7D851928BFC8A9007EE798 /* PersonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7D851828BFC8A9007EE798 /* PersonCell.swift */; };
+		ED90828928C6FF1E004DC4A5 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED90828828C6FF1E004DC4A5 /* Person.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		ED7D851028BFC321007EE798 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED7D851228BFC321007EE798 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ED7D851828BFC8A9007EE798 /* PersonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonCell.swift; sourceTree = "<group>"; };
+		ED90828828C6FF1E004DC4A5 /* Person.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			children = (
 				ED7D850428BFC320007EE798 /* AppDelegate.swift */,
 				ED7D850628BFC320007EE798 /* SceneDelegate.swift */,
+				ED90828828C6FF1E004DC4A5 /* Person.swift */,
 				ED7D850828BFC320007EE798 /* ViewController.swift */,
 				ED7D850A28BFC320007EE798 /* Main.storyboard */,
 				ED7D851828BFC8A9007EE798 /* PersonCell.swift */,
@@ -141,6 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED90828928C6FF1E004DC4A5 /* Person.swift in Sources */,
 				ED7D850928BFC320007EE798 /* ViewController.swift in Sources */,
 				ED7D850528BFC320007EE798 /* AppDelegate.swift in Sources */,
 				ED7D851928BFC8A9007EE798 /* PersonCell.swift in Sources */,
