@@ -46,3 +46,102 @@ a copy of the project 10 folder twice – call the copies project12a and project
 
 ---------- Reading and writing basics: UserDefaults
 
+You can use UserDefaults to store any basic data type for as long as the app is installed. You can write basic types 
+such as Bool, Float, Double, Int, String, or URL, but you can also write more complex types such as arrays, dictionaries 
+and Date – and even Data values.
+
+When you write data to UserDefaults, it automatically gets loaded when your app runs so that you can read it back again. 
+This makes using it really easy, but you need to know that it's a bad idea to store lots of data in there because it will 
+slow loading of your app. If you think your saved data would take up more than say 100KB, UserDefaults is almost certainly 
+the wrong choice.
+
+Before we get into modifying project 10, we're going to do a little bit of test coding first to try out what UserDefaults 
+lets us do. You might find it useful to create a fresh Single View App project just so you can test out the code.
+
+Para começar com o UserDefaults, você cria uma nova instância da classe como esta:
+
+let defaults = UserDefaults.standard
+
+Uma vez feito isso, é fácil definir uma variedade de valores - você só precisa dar a cada um uma chave única para que 
+possa referenciá-la mais tarde. Esses valores quase sempre não têm significado além do que você os usa, então certifique-se 
+de que os nomes-chave sejam memoráveis.
+
+Aqui estão alguns exemplos:
+
+let defaults = UserDefaults.standard
+defaults.set(25, forKey: "Age")
+defaults.set(true, forKey: "UseTouchID")
+defaults.set(CGFloat.pi, forKey: "Pi")
+
+You can also use the set() to store strings, arrays, dictionaries and dates. Now, here's a curiosity that's worth 
+explaining briefly: in Swift, strings, arrays and dictionaries are all structs, not objects. But UserDefaults was 
+written for NSString and friends – all of which are 100% interchangeable with Swift their equivalents – which is why 
+this code works.
+
+Using set() for these advanced types is just the same as using the other data types:
+
+defaults.set("Paul Hudson", forKey: "Name")
+defaults.set(Date(), forKey: "LastRun")
+
+Even if you're trying to save complex types such as arrays and dictionaries, UserDefaults laps it up:
+
+let array = ["Hello", "World"]
+defaults.set(array, forKey: "SavedArray")
+
+let dict = ["Name": "Paul", "Country": "UK"]
+defaults.set(dict, forKey: "SavedDict")
+
+Isso é o suficiente sobre escrever por enquanto; vamos dar uma olhada na leitura.
+
+When you're reading values from UserDefaults you need to check the return type carefully to ensure you know what you're 
+getting. Here's what you need to know:
+
+- integer(forKey:)retorna um inteiro se a chave existir, ou 0 se não.
+
+- bool(forKey:)retorna um booleano se a chave existia, ou falso se não.
+
+- float(forKey:)retorna um flutuador se a chave existir, ou 0,0 se não.
+
+- double(forKey:)retorna um duplo se a chave existir, ou 0,0 se não.
+
+- object(forKey:)devolve Any? então você precisa digitá-lo condicionalmente para o seu tipo de dados.
+
+Knowing the return values are important, because if you use bool(forKey:) and get back "false", does that mean the key 
+didn't exist, or did it perhaps exist and you just set it to be false?
+
+It's object(forKey:) that will cause you the most bother, because you get an optional object back. You're faced with two 
+options, one of which isn't smart so you realistically have only one option!
+
+Suas opções:
+
+- Use as! para forçar o typecast do seu objeto ao tipo de dados que ele deveria ser.
+
+- Usar as? para opcionalmente digitar seu objeto para o tipo que deveria ser.
+
+If you use as! and object(forKey:) returned nil, you'll get a crash, so I really don't recommend it unless you're 
+absolutely sure. But equally, using as? is annoying because you then have to unwrap the optional or create a default 
+value.
+
+Há uma solução aqui, e tem o nome cativante do operador de coalescing nil, e parece assim:??. Isso faz duas coisas ao 
+mesmo tempo: se o objeto à esquerda for opcional e existir, ele será desembrulhado em um valor não opcional; se não 
+existir, ele usará o valor à direita.
+
+This means we can use object(forKey:) and as? to get an optional object, then use ?? to either unwrap the object or set 
+a default value, all in one line.
+
+Por exemplo, digamos que queremos ler a matriz que salvamos anteriormente com o nome da chave SavedArray. Veja como 
+fazer isso com o operador de coalescência nil:
+
+let array = defaults.object(forKey:"SavedArray") as? [String] ?? [String]()
+
+So, if SavedArray exists and is a string array, it will be placed into the array constant. If it doesn't exist (or if it 
+does exist and isn't a string array), then array gets set to be a new string array.
+
+Esta técnica também funciona para dicionários, mas obviamente você precisa digitá-la corretamente. Para ler o dicionário 
+que salvamos anteriormente, usaria o seguinte:
+
+let dict = defaults.object(forKey: "SavedDict") as? [String: String] ?? [String: String]()
+
+
+
+---------- 
