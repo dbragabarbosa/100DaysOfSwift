@@ -145,3 +145,113 @@ let dict = defaults.object(forKey: "SavedDict") as? [String: String] ?? [String:
 
 
 ---------- Fixing Project 10: NSCoding
+
+Você acabou de aprender todos os fundamentos básicos de trabalhar com UserDefaults, mas estamos apenas começando. Você vê, 
+acima e além de inteiros, datas, strings, matrizes e assim por diante, você também pode salvar qualquer tipo de dado dentro 
+do UserDefaults, desde que siga algumas regras.
+
+What happens is simple: you use the archivedData() method of NSKeyedArchiver, which turns an object graph into a Data 
+object, then write that to UserDefaults as if it were any other object. If you were wondering, “object graph” means “your 
+object, plus any objects it refers to, plus any objects those objects refer to, and so on.”
+
+As regras são muito simples:
+
+1. All your data types must be one of the following: boolean, integer, float, double, string, array, dictionary, Date, or 
+a class that fits rule 2.
+
+2. Se o seu tipo de dados for uma classe, ele deve estar em conformidade com o protocolo NSCoding, que é usado para 
+arquivar gráficos de objetos.
+
+3. Se o seu tipo de dados for uma matriz ou dicionário, todas as chaves e valores devem corresponder à regra 1 ou à regra 2.
+
+Many of Apple's own classes support NSCoding, including but not limited to: UIColor, UIImage, UIView, UILabel, UIImageView, 
+UITableView, SKSpriteNode and many more. But your own classes do not, at least not by default. If we want to save the people 
+array to UserDefaults we'll need to conform to the NSCoding protocol.
+
+The first step is to modify your Person class to this:
+
+class Person: NSObject, NSCoding {
+
+Quando estávamos trabalhando neste código no projeto 10, havia duas perguntas pendentes:
+
+- Por que precisamos de uma aula aqui quando uma estrutura vai funcionar tão bem? (E, na verdade, melhor, porque as 
+estruturas vêm com um inicializador padrão!)
+
+- Por que precisamos herdar do NSObject?
+
+It's time for the answers to become clear. You see, working with NSCoding requires you to use objects, or, in the case of 
+strings, arrays and dictionaries, structs that are interchangeable with objects. If we made the Person class into a struct, 
+we couldn't use it with NSCoding.
+
+The reason we inherit from NSObject is again because it's required to use NSCoding – although cunningly Swift won't mention 
+that to you, your app will just crash.
+
+Depois de estar em conformidade com o protocolo NSCoding, você receberá erros do compilador porque o protocolo exige que 
+você implemente dois métodos: um novo inicializador e encode().
+
+Precisamos escrever mais algum código para corrigir os problemas e, embora o código seja muito semelhante ao que você já 
+viu no UserDefaults, ele tem duas coisas novas que você precisa saber.
+
+Primeiro, você usará uma nova classe chamada NSCoder. Isso é responsável pela codificação (escrita) e pela decodificação 
+(leitura) de seus dados para que possam ser usados com UserDefaults.
+
+Second, the new initializer must be declared with the required keyword. This means "if anyone tries to subclass this class, 
+they are required to implement this method." An alternative to using required is to declare that your class can never be 
+subclassed, known as a final class, in which case you don't need required because subclassing isn't possible. We'll be 
+using required here.
+
+Adicione estes dois métodos à classe Person:
+
+required init(coder aDecoder: NSCoder) {
+    name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
+    image = aDecoder.decodeObject(forKey: "image") as? String ?? ""
+}
+
+func encode(with aCoder: NSCoder) {
+    aCoder.encode(name, forKey: "name")
+    aCoder.encode(image, forKey: "image")
+}
+
+The initializer is used when loading objects of this class, and encode() is used when saving. The code is very similar to 
+using UserDefaults, but here we’re adding as? typecasting and nil coalescing just in case we get invalid data back.
+
+With those changes, the Person class now conforms to NSCoding, so we can go back to ViewController.swift and add code to 
+load and save the people array.
+
+Let's start with writing, because once you understand that the reading code will make much more sense. As I said earlier, 
+you can write Data objects to UserDefaults, but we don't currently have a Data object – we just have an array.
+
+Fortunately, the archivedData() method of NSKeyedArchiver turns an object graph into a Data object using those NSCoding 
+methods we just added to our class. Because we make changes to the array by adding people or by renaming them, let's create 
+a single save() method we can use anywhere that's needed:
+
+func save() {
+    if let savedData = try? NSKeyedArchiver.archivedData(withRootObject: people, requiringSecureCoding: false) {
+        let defaults = UserDefaults.standard
+        defaults.set(savedData, forKey: "people")
+    }
+}
+
+So: line 1 is what converts our array into a Data object, then lines 2 and 3 save that data object to UserDefaults. You 
+now just need to call that save() method when we change a person's name or when we import a new picture.
+
+You need to modify our collection view's didSelectItemAt method so that you call self.save() just after calling 
+self.collectionView.reloadData(). Remember, the self is required because we're inside a closure. You then need to modify 
+the image picker's didFinishPickingMediaWithInfo method so that it calls save() just before the end of the method.
+
+E é isso - só alteramos os dados em dois lugares, e ambos agora têm uma chamada tosavesave().
+
+Finalmente, precisamos carregar a matriz de volta do disco quando o aplicativo for executado, então adicione este código 
+aoviewDidLoadviewDidLoad():
+
+let defaults = UserDefaults.standard
+
+if let savedPeople = defaults.object(forKey: "people") as? Data {
+    if let decodedPeople = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(savedPeople) as? [Person] {
+        people = decodedPeople
+    }
+}
+
+This code is effectively the save() method in reverse: we use the object(forKey:) method to pull out an optional Data, 
+using if let and as? to unwrap it. We then give that to the unarchiveTopLevelObjectWithData() method of NSKeyedUnarchiver 
+to convert it back to an object graph – i.e., our array of Person objects.
