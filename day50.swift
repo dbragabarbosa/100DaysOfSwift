@@ -68,3 +68,59 @@ read and write to disk.
 
 
 ---------- Key points 
+
+Há três pedaços de código que valem a pena olhar novamente antes de continuar com o projeto 13.
+
+First, lets review the initializer for our custom Person class from project 10:
+
+init(name: String, image: String) {
+    self.name = name
+    self.image = image
+}
+
+There are two interesting things in that code. First, we need to use self.name = name to make our intention clear: 
+the class had a property called name, and the method had a parameter called name, so if we had just written name = name 
+Swift wouldn’t know what we meant.
+
+Second, notice that we wrote init rather than func init. This is because init(), although it looks like a regular method, 
+is special: technically it’s an initializer rather than a method. Initializers are things that create objects, rather 
+than being methods you call on them later on.
+
+A segunda peça de código que eu gostaria de revisar é esta, tirada do projeto 11:
+
+if let touch = touches.first {
+    let location = touch.location(in: self)
+    let box = SKSpriteNode(color: UIColor.red, size: CGSize(width: 64, height: 64))
+    box.position = location
+    addChild(box)
+}
+
+Colocamos isso dentro do método touchesBegan(), que é acionado quando o usuário toca na tela. Este método recebe um 
+conjunto de toques que representam os dedos do usuário na tela, mas no jogo nós realmente não nos importamos com o 
+suporte multitoque, apenas dizemos touches.first.
+
+Now, obviously the touchesBegan() method only gets triggered when a touch has actually started, but touches.first is 
+still optional. This is because the set of touches that gets passed in doesn’t have any special way of saying “I contain 
+at least one thing”. So, even though we know there’s going to be at least one touch in there, we still need to unwrap 
+the optional. This is one of those times when the force unwrap operator would be justified:
+
+let touch = touches.first!
+
+A última parte do código que eu gostaria de revisar neste marco é do projeto 12, onde tínhamos essas três linhas:
+
+let defaults = UserDefaults.standard
+defaults.set(25, forKey: "Age")
+let array = defaults.object(forKey:"SavedArray") as? [String] ?? [String]()
+
+The first one gets access to the app’s built-in UserDefaults store. If you were wondering, there are alternatives: 
+it’s possible to request access to a shared UserDefaults that more than one app can read and write to, which is helpful 
+if you ship multiple apps with related functionality.
+
+The second line writes the integer 25 next to the key “Age”. UserDefaults is a key-value store, like a dictionary, 
+which means every value must be read and written using a key name like “Age”. In my own code, I always use the same 
+name for my UserDefaults keys as I do for my properties, which makes your code easier to maintain.
+
+The third line is the most interesting: it retrieves the object at the key “SavedArray” then tries to typecast it as a 
+string array. If it succeeds – if an object was found at “SavedArray” and if it could be converted to a string array – 
+then it gets assigned to the array constant. But if either of those fail, then the nil coalescing operator (the ?? part) 
+ensures that array gets set to an empty string array.
