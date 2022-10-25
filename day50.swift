@@ -124,3 +124,34 @@ The third line is the most interesting: it retrieves the object at the key “Sa
 string array. If it succeeds – if an object was found at “SavedArray” and if it could be converted to a string array – 
 then it gets assigned to the array constant. But if either of those fail, then the nil coalescing operator (the ?? part) 
 ensures that array gets set to an empty string array.
+
+
+
+---------- Challenge 
+
+Seu desafio é colocar dois projetos diferentes em um: eu gostaria que você deixasse os usuários tirarem fotos de coisas 
+que lhes interessam, adicionasse legendas a elas e, em seguida, mostrasse essas fotos em uma visualização de tabela. 
+Tocar na legenda deve mostrar a imagem em um novo controlador de visualização, como fizemos com o projeto 1. Portanto, 
+seu projeto finalizado precisa usar elementos do projeto 1 e do projeto 12, o que deve lhe dar ampla chance de praticar.
+
+This will require you to use the picker.sourceType = .camera setting for your image picker controller, create a custom 
+type that stores a filename and a caption, then show the list of saved pictures in a table view. Remember: using the 
+camera is only possible on a physical device.
+
+Pode parecer contra-intuitivo, mas confie em mim: uma das melhores maneiras de aprender as coisas profundamente é 
+aprendê-las, esquecê-las e depois aprendê-las novamente. Então, não se preocupe se houver algumas coisas que você não 
+se lembra imediatamente: forçar seu cérebro por elas, ou talvez reler um capítulo mais antigo apenas brevemente, é uma 
+ótima maneira de ajudar seu conhecimento do iOS a afundar um pouco mais.
+
+Aqui estão algumas dicas caso você tenha problemas:
+
+- You’ll need to make ViewController build on UITableViewController rather than just UIViewController.
+
+- Just like in project 10, you should create a custom type that stores an image filename and a caption string, then use 
+either Codable or NSCoding to load and save that.
+
+- Use a UIAlertController to get the user’s caption for their image – a single text field is enough.
+
+- You’ll need to design your detail view controller using Interface Builder, then call instantiateViewController to 
+load it when a table view row is tapped.
+
