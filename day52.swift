@@ -107,3 +107,64 @@ que queremos. Chame o método da ação intensityChanged().
 
 
 
+---------- Importing a picture
+
+We already have two outlets at the top of our class: one for the image view and one for the slider. We need another 
+property, in which we will store a UIImage containing the image that the user selected. So, add this beneath the two 
+outlets:
+
+var currentImage: UIImage!
+
+Nossa primeira tarefa será importar uma foto da biblioteca de fotos do usuário. Isso é quase idêntico ao projeto 10, 
+então vou explicar apenas os pedaços importantes. Se você perdeu o projeto 10, deveria ter tido em conta meu aviso para 
+não pular projetos!
+
+Primeiro, precisamos adicionar um botão à barra de navegação que permitirá que os usuários importem uma foto de sua 
+biblioteca. Coloque essas duas linhas no seu método viewDidLoad():
+
+title = "YACIFP"
+navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(importPicture))
+
+Tudo bem, então o primeiro não é necessário - apenas define o título como YACIFP, abreviação de "Yet Another Core 
+Image Filters Program". (Spoiler: a App Store está cheia deles!) Se você está se sentindo um pouco menos cínico do 
+que eu, tente "Instafilter" para um título. Mas o que importa é a segunda linha, porque inicia o processo de importação.
+
+Here's the importPicture() method – it's almost identical to the import method from project 10, so again no explaining 
+required:
+
+@objc func importPicture() {
+    let picker = UIImagePickerController()
+    picker.allowsEditing = true
+    picker.delegate = self
+    present(picker, animated: true)
+}
+
+Você deve se lembrar que a primeira vez que usar um UIImagePickerController, o iOS pedirá permissão ao usuário para 
+ler sua biblioteca de fotos, o que significa que precisamos adicionar uma string de texto descrevendo nossa intenção. 
+Então, abra Info.plist, selecione qualquer item, clique em + e escolha o nome-chave “Privacidade - Descrição de Uso 
+de Adições à Biblioteca de Fotos”. Dê a ele o valor “Precisamos importar fotos” e pressione Return.
+
+Depois de atribuir nosso controlador de visualização como delegado do seletor de imagens, você receberá avisos de que 
+não estamos em conformidade com os protocolos corretos. Corrija isso alterando a definição de classe do controlador 
+de visualização para isso:
+
+class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+Novamente, isso é idêntico ao projeto 10.
+
+Como antes, precisamos implementar um método para quando o usuário selecionou uma imagem usando o seletor de imagens. 
+Este código é quase literal do projeto 10, então tudo deve ser notícia antiga para você:
+
+func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    guard let image = info[.editedImage] as? UIImage else { return }
+
+    dismiss(animated: true)
+
+    currentImage = image
+}
+
+There is one slight change in there, and it's where we set our currentImage image to be the one selected in the image 
+picker. This is required so that we can have a copy of what was originally imported. Whenever the user changes filter, 
+we need to put that original image back into the filter.
+
+Tudo isso tem sido um código antigo, então nada muito desgastante. Mas agora é hora da Core Image!
