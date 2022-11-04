@@ -21,4 +21,32 @@ todos os seus três desafios.
 
 
 
----------- 
+---------- Wrap up
+
+This has been the briefest possible introduction to Core Image, yet we still managed to make something useful, using 
+UISlider for the first time and even writing images to the photo album.
+
+A menos que você realmente pretenda fazer o Programa de Filtros de Imagem Mais Básicos (boa sorte!) seu uso do Core 
+Image será principalmente sobre manipular uma imagem de uma maneira muito específica, usando um filtro que você criou 
+à mão para ficar ótimo.
+
+Se você quiser experimentar outros filtros, pesquise no Google por "Core Image Filter Reference" e tenha uma leitura - 
+ele listará as teclas de entrada para cada um deles para que você possa obter um controle muito fino sobre os filtros.
+
+Revise o que você aprendeu
+Qualquer um pode assistir a um tutorial, mas é preciso trabalho real para lembrar o que foi ensinado. É meu trabalho 
+garantir que você tire o máximo possível desses tutoriais, então preparei uma breve revisão para ajudá-lo a verificar 
+seu aprendizado.
+
+Desafio
+
+Uma das melhores maneiras de aprender é escrever seu próprio código com a maior frequência possível, então aqui estão 
+três maneiras de experimentar seu novo conhecimento para garantir que você entenda completamente o que está acontecendo:
+
+1. Tente fazer com que o botão Salvar mostre um erro se não houver imagem na visualização da imagem.
+
+2. Faça o botão Alterar Filtro alterar seu título para mostrar o nome do filtro atualmente selecionado.
+
+3. Experimente ter mais de um controle deslizante, para controlar cada uma das teclas de entrada com as quais você se 
+importa. Por exemplo, você pode ter um para raio e outro para intensidade.
+
