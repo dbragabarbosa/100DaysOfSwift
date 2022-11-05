@@ -33,10 +33,6 @@ Image será principalmente sobre manipular uma imagem de uma maneira muito espec
 Se você quiser experimentar outros filtros, pesquise no Google por "Core Image Filter Reference" e tenha uma leitura - 
 ele listará as teclas de entrada para cada um deles para que você possa obter um controle muito fino sobre os filtros.
 
-Revise o que você aprendeu
-Qualquer um pode assistir a um tutorial, mas é preciso trabalho real para lembrar o que foi ensinado. É meu trabalho 
-garantir que você tire o máximo possível desses tutoriais, então preparei uma breve revisão para ajudá-lo a verificar 
-seu aprendizado.
 
 Desafio
 
