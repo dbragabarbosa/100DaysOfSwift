@@ -62,3 +62,6 @@ Reminder: When working with SpriteKit projects I strongly recommend you use a de
 physical iPad to hand, use the lowest-spec iPad simulator rather than something like the 12.9-inch iPad Pro – you'll 
 get much slightly frame rates, making it much more suitable for testing.
 
+
+
+---------- Getting up and running: SKCropNode
