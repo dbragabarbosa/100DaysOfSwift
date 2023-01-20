@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="sPK-BQ-MfF">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="sPK-BQ-MfF">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,16 +19,16 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Picture" textLabel="3JI-37-uCn" style="IBUITableViewCellStyleDefault" id="Zhd-0t-58h">
-                                <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                                <rect key="frame" x="0.0" y="50" width="414" height="90.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Zhd-0t-58h" id="Ttb-gg-zDW">
-                                    <rect key="frame" x="0.0" y="0.0" width="385.5" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="383.5" height="90.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3JI-37-uCn">
-                                            <rect key="frame" x="20" y="0.0" width="357.5" height="43.5"/>
+                                            <rect key="frame" x="20" y="0.0" width="355.5" height="90.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="38"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -54,17 +55,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vwc-px-go1">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vwc-px-go1">
+                                <rect key="frame" x="20" y="149" width="374" height="627"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="LRh-cJ-XCd"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="vwc-px-go1" firstAttribute="leading" secondItem="LRh-cJ-XCd" secondAttribute="leading" id="1kH-n7-eVq"/>
-                            <constraint firstItem="vwc-px-go1" firstAttribute="centerY" secondItem="NpC-Kk-o0d" secondAttribute="centerY" id="Ot7-vm-JcO"/>
-                            <constraint firstItem="vwc-px-go1" firstAttribute="top" secondItem="NpC-Kk-o0d" secondAttribute="topMargin" constant="-44" id="aoS-HP-ieb"/>
-                            <constraint firstItem="vwc-px-go1" firstAttribute="centerX" secondItem="NpC-Kk-o0d" secondAttribute="centerX" id="cbo-hC-A5Q"/>
+                            <constraint firstItem="vwc-px-go1" firstAttribute="leading" secondItem="NpC-Kk-o0d" secondAttribute="leadingMargin" id="01j-uI-xMd"/>
+                            <constraint firstItem="vwc-px-go1" firstAttribute="top" secondItem="LRh-cJ-XCd" secondAttribute="top" constant="101" id="pHE-Xq-kAw"/>
+                            <constraint firstItem="vwc-px-go1" firstAttribute="trailing" secondItem="NpC-Kk-o0d" secondAttribute="trailingMargin" id="pgl-2T-Zza"/>
+                            <constraint firstItem="LRh-cJ-XCd" firstAttribute="bottom" secondItem="vwc-px-go1" secondAttribute="bottom" constant="86" id="xmV-Of-yrI"/>
                         </constraints>
                     </view>
                     <connections>
@@ -81,7 +82,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="sPK-BQ-MfF" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="zHE-88-1aT">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
