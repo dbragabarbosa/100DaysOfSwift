@@ -21,6 +21,8 @@ class ViewController: UIViewController {
     
     var score = 0
     
+    var contador = 0
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -65,20 +67,28 @@ class ViewController: UIViewController {
 
     @IBAction func buttonTapped(_ sender: UIButton)
     {
+        contador += 1
+        
         var title: String
         
         if sender.tag == correctAnswer
         {
-            title = "Correct"
+            title = "Correto"
             score += 1
         }
         else
         {
-            title = "Wrong"
+            title = "Errado"
             score -= 1
         }
         
-        let ac = UIAlertController(title: title, message: "Your score is \(score).", preferredStyle: .alert)
+        if(contador == 5)
+        {
+            let end = UIAlertController(title: title, message: "Pontuação final: \(score).", preferredStyle: .alert)
+            present(end, animated: true)
+        }
+        
+        let ac = UIAlertController(title: title, message: "Pontuação: \(score).", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestion))
         present(ac, animated: true)
         

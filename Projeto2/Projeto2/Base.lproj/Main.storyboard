@@ -16,24 +16,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dtX-m0-59q">
-                                <rect key="frame" x="84.666666666666686" y="100" width="224" height="114"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dtX-m0-59q">
+                                <rect key="frame" x="84" y="168" width="224" height="114"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="us"/>
                                 <connections>
                                     <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rlD-rF-ieb"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OSB-Gc-Fbf">
-                                <rect key="frame" x="84.666666666666686" y="244" width="224" height="114"/>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OSB-Gc-Fbf">
+                                <rect key="frame" x="84" y="369" width="224" height="114"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="us"/>
                                 <connections>
                                     <action selector="buttonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dIT-n6-5pO"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ki-Z4-mnM">
-                                <rect key="frame" x="84.666666666666686" y="388" width="224" height="114"/>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ki-Z4-mnM">
+                                <rect key="frame" x="84" y="572" width="224" height="114"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="us"/>
                                 <connections>
@@ -43,14 +46,6 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="OSB-Gc-Fbf" firstAttribute="centerX" secondItem="dtX-m0-59q" secondAttribute="centerX" id="4Je-iI-rph"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="dtX-m0-59q" secondAttribute="top" constant="3" id="ALD-9c-GPV"/>
-                            <constraint firstItem="OSB-Gc-Fbf" firstAttribute="top" secondItem="dtX-m0-59q" secondAttribute="bottom" constant="30" id="Rp0-uh-AQj"/>
-                            <constraint firstItem="8Ki-Z4-mnM" firstAttribute="centerX" secondItem="OSB-Gc-Fbf" secondAttribute="centerX" id="hvi-hF-Y8p"/>
-                            <constraint firstItem="dtX-m0-59q" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="jI7-yQ-EUG"/>
-                            <constraint firstItem="8Ki-Z4-mnM" firstAttribute="top" secondItem="OSB-Gc-Fbf" secondAttribute="bottom" constant="30" id="vx6-vz-dCp"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="W10-Xu-7Ym"/>
                     <connections>
