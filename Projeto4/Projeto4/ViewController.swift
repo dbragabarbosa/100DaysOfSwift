@@ -40,7 +40,10 @@ class ViewController: UIViewController, WKNavigationDelegate {  // the class inh
         let spacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let refresh = UIBarButtonItem(barButtonSystemItem: .refresh, target: webView, action: #selector(webView.reload))
         
-        toolbarItems = [progressButton, spacer, refresh]
+        let back = UIBarButtonItem(barButtonSystemItem: .undo, target: webView, action: #selector(webView.goBack))
+        let forward = UIBarButtonItem(barButtonSystemItem: .redo, target: webView, action: #selector(webView.goForward))
+        
+        toolbarItems = [progressButton, spacer, back, forward, refresh]
         navigationController?.isToolbarHidden = false
         
         // this probably seems like pointless obfuscation from Apple, but WKWebViews don't load websites from strings like www.hackingwithswift.com, or even from a URL made out of those strings. You need to turn the string into a URL, then put the URL into an URLRequest, and WKWebView will load that. Fortunately it's not hard to do!
@@ -91,9 +94,15 @@ class ViewController: UIViewController, WKNavigationDelegate {  // the class inh
                     decisionHandler(.allow)
                     return
                 }
+                else
+                {
+//                    let alertaDeBloqueio = UIAlertController(title: "Essa URL não é permitida!", message: nil, preferredStyle: .alert)
+//                    alertaDeBloqueio.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
+//                    present(alertaDeBloqueio, animated: true)
+                }
             }
         }
-
+        
         decisionHandler(.cancel)
     }
 
