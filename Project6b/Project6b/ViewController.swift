@@ -55,6 +55,8 @@ class ViewController: UIViewController {
 //        view.addConstraints( NSLayoutConstraint.constraints(withVisualFormat: "H:|[label3]|", options: [], metrics: nil, views: viewsDictionary))
 //        view.addConstraints( NSLayoutConstraint.constraints(withVisualFormat: "H:|[label4]|", options: [], metrics: nil, views: viewsDictionary))
 //        view.addConstraints( NSLayoutConstraint.constraints(withVisualFormat: "H:|[label5]|", options: [], metrics: nil, views: viewsDictionary))
+        
+//        So, "H:|[label1]|" means "horizontally, I want my label1 to go edge to edge in my view." 
 //
 //        let metrics = ["labelHeight": 88]
 //
