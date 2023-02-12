@@ -13,6 +13,8 @@
 		ED02BE77299843EF009213B0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED02BE75299843EF009213B0 /* Main.storyboard */; };
 		ED02BE79299843F2009213B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED02BE78299843F2009213B0 /* Assets.xcassets */; };
 		ED02BE7C299843F2009213B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED02BE7A299843F2009213B0 /* LaunchScreen.storyboard */; };
+		ED02BE842998791B009213B0 /* Petition.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED02BE832998791B009213B0 /* Petition.swift */; };
+		ED02BE8629987A2E009213B0 /* Petitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED02BE8529987A2D009213B0 /* Petitions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		ED02BE78299843F2009213B0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ED02BE7B299843F2009213B0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED02BE7D299843F2009213B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED02BE832998791B009213B0 /* Petition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Petition.swift; sourceTree = "<group>"; };
+		ED02BE8529987A2D009213B0 /* Petitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Petitions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,8 @@
 				ED02BE78299843F2009213B0 /* Assets.xcassets */,
 				ED02BE7A299843F2009213B0 /* LaunchScreen.storyboard */,
 				ED02BE7D299843F2009213B0 /* Info.plist */,
+				ED02BE832998791B009213B0 /* Petition.swift */,
+				ED02BE8529987A2D009213B0 /* Petitions.swift */,
 			);
 			path = Projeto7;
 			sourceTree = "<group>";
@@ -139,8 +145,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED02BE74299843EF009213B0 /* ViewController.swift in Sources */,
+				ED02BE842998791B009213B0 /* Petition.swift in Sources */,
 				ED02BE70299843EF009213B0 /* AppDelegate.swift in Sources */,
 				ED02BE72299843EF009213B0 /* SceneDelegate.swift in Sources */,
+				ED02BE8629987A2E009213B0 /* Petitions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
