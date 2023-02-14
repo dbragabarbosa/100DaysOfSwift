@@ -13,6 +13,10 @@ class ViewController: UITableViewController
 //    var petitions = [String]()
     var petitions = [Petition]()
     
+    var petitionsProcuradas = [Petition]()
+    
+    var stringProcurada = [String]()
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -51,7 +55,38 @@ class ViewController: UITableViewController
             showError()
         }
 
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(creditos))
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(filtroDePeticoes))
+        
+    }
+    
+    @objc func filtroDePeticoes()
+    {
+        let alerta = UIAlertController(title: "Digite o que você procura:", message: nil, preferredStyle: .alert)
+        
+        alerta.addTextField()
+        
+        let enviar = UIAlertAction(title: "Enviar", style: .default) { [weak self, weak alerta] action in
+            
+            guard let resposta = alerta?.textFields?[0].text else { return }
+            
+            self?.stringProcurada.insert(resposta, at: 0)
+
+        }
+        
+        alerta.addAction(enviar)
+        
+        present(alerta, animated: true)
+    }
+    
+    @objc func creditos()
+    {
+        let alerta = UIAlertController(title: "Todos os dados vêm da API We The People da Whitehouse.", message: nil, preferredStyle: .alert)
+        
+        alerta.addAction(UIAlertAction(title: "OK", style: .default))
+        
+        present(alerta, animated: true)
     }
     
     func parse(json: Data)
@@ -61,6 +96,11 @@ class ViewController: UITableViewController
         if let jsonPetitions = try? decoder.decode(Petitions.self, from: json)
         {
             petitions = jsonPetitions.results
+            
+            print(stringProcurada)
+            
+            petitionsProcuradas = petitions
+            
             tableView.reloadData()
         }
     }
