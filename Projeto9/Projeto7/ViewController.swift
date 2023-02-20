@@ -17,56 +17,73 @@ class ViewController: UITableViewController
     
     var stringProcurada = [String]()
     
-    override func viewDidLoad()
-    {
+//    override func viewDidLoad()
+//    {
+//        super.viewDidLoad()
+//        // Do any additional setup after loading the view.
+//
+//        // let urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
+////        let urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
+//
+//        let urlString: String
+//
+//        if navigationController?.tabBarItem.tag == 0
+//        {
+////            urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
+//            urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
+//        }
+//        else
+//        {
+////            urlString = "https://api.whitehouse.gov/v1/petitions.json?signatureCountFloor=10000&limit=100"
+//            urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
+//        }
+//
+//
+//        DispatchQueue.global(qos: .userInitiated).async {
+//            if let url = URL(string: urlString) {
+//                if let data = try? Data(contentsOf: url) {
+//                    self.parse(json: data)
+//                    return
+//                }
+//            }
+//
+//            self.showError()
+//        }
+//
+//
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(creditos))
+//
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(filtroDePeticoes))
+//
+//    }
+    
+    
+    override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        // let urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
-//        let urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
-        
+
+        performSelector(inBackground: #selector(fetchJSON), with: nil)
+    }
+
+    @objc func fetchJSON() {
         let urlString: String
 
-        if navigationController?.tabBarItem.tag == 0
-        {
-//            urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
-            urlString = "https://www.hackingwithswift.com/samples/petitions-1.json"
-        }
-        else
-        {
-//            urlString = "https://api.whitehouse.gov/v1/petitions.json?signatureCountFloor=10000&limit=100"
-            urlString = "https://www.hackingwithswift.com/samples/petitions-2.json"
+        if navigationController?.tabBarItem.tag == 0 {
+            urlString = "https://api.whitehouse.gov/v1/petitions.json?limit=100"
+        } else {
+            urlString = "https://api.whitehouse.gov/v1/petitions.json?signatureCountFloor=10000&limit=100"
         }
 
-        
-        DispatchQueue.global(qos: .userInitiated).async
-        {
-            
-            if let url = URL(string: urlString)
-            {
-                if let data = try? Data(contentsOf: url)
-                {
-                    // we're OK to parse!
-                    self.parse(json: data)
-                }
-                else
-                {
-                    self.showError()
-                }
+        if let url = URL(string: urlString) {
+            if let data = try? Data(contentsOf: url) {
+                parse(json: data)
+                return
             }
-            else
-            {
-                self.showError()
-            }
-
         }
-        
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .bookmarks, target: self, action: #selector(creditos))
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(filtroDePeticoes))
-        
+        performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)
     }
+    
+    
     
     @objc func filtroDePeticoes()
     {
@@ -96,21 +113,42 @@ class ViewController: UITableViewController
         present(alerta, animated: true)
     }
     
-    func parse(json: Data)
-    {
+//    func parse(json: Data)
+//    {
+//        let decoder = JSONDecoder()
+//
+//        if let jsonPetitions = try? decoder.decode(Petitions.self, from: json)
+//        {
+//            petitions = jsonPetitions.results
+//
+//            print(stringProcurada)
+//
+//            petitionsProcuradas = petitions
+//
+////            tableView.reloadData()
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
+//        }
+//    }
+    
+    
+    func parse(json: Data) {
         let decoder = JSONDecoder()
+
+//        if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
+//            petitions = jsonPetitions.results
+//            tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
+//        }
         
-        if let jsonPetitions = try? decoder.decode(Petitions.self, from: json)
-        {
+        if let jsonPetitions = try? decoder.decode(Petitions.self, from: json) {
             petitions = jsonPetitions.results
-            
-            print(stringProcurada)
-            
-            petitionsProcuradas = petitions
-            
-            tableView.reloadData()
+            tableView.performSelector(onMainThread: #selector(UITableView.reloadData), with: nil, waitUntilDone: false)
+        } else {
+            performSelector(onMainThread: #selector(showError), with: nil, waitUntilDone: false)
         }
     }
+    
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -137,12 +175,22 @@ class ViewController: UITableViewController
     }
 
     
-    func showError()
-    {
-        let ac = UIAlertController(title: "Loading error", message: "There was a problem loading the feed; please check your conection and try again.", preferredStyle: .alert)
+//    func showError()
+//    {
+//        DispatchQueue.main.async
+//        {
+//            let ac = UIAlertController(title: "Loading error", message: "There was a problem loading the feed; please check your connection and try again.", preferredStyle: .alert)
+//            ac.addAction(UIAlertAction(title: "OK", style: .default))
+//            self.present(ac, animated: true)
+//        }
+//    }
+    
+    @objc func showError() {
+        let ac = UIAlertController(title: "Loading error", message: "There was a problem loading the feed; please check your connection and try again.", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         present(ac, animated: true)
     }
+    
 
 }
 
