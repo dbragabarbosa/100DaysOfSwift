@@ -30,7 +30,9 @@
                             <outlet property="delegate" destination="4x9-Yn-oJR" id="BXE-A8-7Vn"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="eln-6r-F6o"/>
+                    <navigationItem key="navigationItem" id="eln-6r-F6o">
+                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="wiT-Lo-fci"/>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YOt-Yl-lde" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
