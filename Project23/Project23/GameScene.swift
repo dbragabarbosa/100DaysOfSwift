@@ -30,6 +30,11 @@ class GameScene: SKScene
         }
     }
     
+//    emitter.position = CGPoint(x: 76, y: 64)
+    let emitterXPosition = 76
+    let emitterYPosition = 64
+
+    
     var livesImages = [SKSpriteNode]()
     var lives = 3
     
@@ -217,6 +222,13 @@ class GameScene: SKScene
             livesImages[1].texture = SKTexture(imageNamed: "sliceLifeGone")
             livesImages[2].texture = SKTexture(imageNamed: "sliceLifeGone")
         }
+        
+        if lives == 0
+        {
+            let spriteNodeEndGame = SKSpriteNode(imageNamed: "sliceLifeGone")
+            spriteNodeEndGame.position = CGPoint(x: 512, y: 384)
+            addChild(spriteNodeEndGame)
+        }
     }
     
     func playSwooshSound()
@@ -325,7 +337,8 @@ class GameScene: SKScene
             
             if let emitter = SKEmitterNode(fileNamed: "sliceFuse")
             {
-                emitter.position = CGPoint(x: 76, y: 64)
+//                emitter.position = CGPoint(x: 76, y: 64)
+                emitter.position = CGPoint(x: emitterXPosition, y: emitterYPosition)
                 enemy.addChild(emitter)
             }
         }
