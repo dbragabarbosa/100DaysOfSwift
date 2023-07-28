@@ -107,3 +107,23 @@ import UIKit
                   attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 24), range: NSRange(location: 8, length: 1))
                   attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 32), range: NSRange(location: 10, length: 4))
                   attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 40), range: NSRange(location: 15, length: 6))
+                  
+                  
+                  extension String
+                  {
+                        func withPrefix(_ prefix: String) -> String
+                        {
+                            guard self.hasPrefix(prefix) else { return self.append(prefix) }
+                            return self
+                        }
+                  }
+
+                
+                  extension String
+                  {
+                        func isNumeric(_ prefix: String) -> Bool
+                        {
+                            guard self.hasPrefix(prefix) else { return self.append(prefix) }
+                            return self
+                        }
+                  }
