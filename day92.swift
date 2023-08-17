@@ -306,4 +306,7 @@ let ac = UIAlertController(title: "Biometry unavailable", message: "Your device 
 ac.addAction(UIAlertAction(title: "OK", style: .default))
 self.present(ac, animated: true)
 
-That completes the authentication code, so go ahead and try running the app now. If you’re using a physical device your regular Touch ID / Face ID should work just fine, but if you’re using the Simulator there are useful options under the Hardware menu – go to Hardware > Touch ID/Face ID > Toggle Enrolled State to opt in to biometric authentication, then use Hardware > Touch ID/Face ID > Matching Touch/Face when you’re asked for a fingerprint/face.
+That completes the authentication code, so go ahead and try running the app now. If you’re using a physical device your 
+regular Touch ID / Face ID should work just fine, but if you’re using the Simulator there are useful options under the 
+Hardware menu – go to Hardware > Touch ID/Face ID > Toggle Enrolled State to opt in to biometric authentication, then 
+use Hardware > Touch ID/Face ID > Matching Touch/Face when you’re asked for a fingerprint/face.
