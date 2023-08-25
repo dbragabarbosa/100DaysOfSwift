@@ -106,10 +106,7 @@ class GameViewController: UIViewController {
     }
     
     
-    func launch(angle: Int, velocity: Int)
-    {
-        
-    }
+
     
     
 }
